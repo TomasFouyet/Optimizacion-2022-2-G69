@@ -8,7 +8,7 @@ modelo.setParam("TimeLimit", 60)
 
 # Agregar Parametros #
 
-
+tipo_caja = {1, 2, 3}
 
 
 # Agregar Variables #

@@ -33,7 +33,62 @@ for i in range(1, len(CostoDespacho)):
     tablaCD.add_row(CostoDespacho[i])
 
 
-for row in tablaNC:
-    row.border = False
-    row.header = False
-    a = row.get_string(fields=["Calcio(mg/d)"]).strip()
+print(tablaNA)
+
+
+# Conjunto Nutrientes por Alimento #
+
+Nutrientes_Alimento = dict()
+
+for i in range(1, len(NutrienteAlimento)):
+    add = {NutrienteAlimento[i][0]: {"Unidad x Kg": NutrienteAlimento[i][1], 
+                                    "Magnesio": NutrienteAlimento[i][2],
+                                    "Calcio": NutrienteAlimento[i][3],
+                                    "Fosforo":  NutrienteAlimento[i][4],
+                                    "Sodio": NutrienteAlimento[i][5],
+                                    "Potasio": NutrienteAlimento[i][6],
+                                    "Hierro": NutrienteAlimento[i][7],
+                                    "Zinc": NutrienteAlimento[i][8],
+                                    "Yodo": NutrienteAlimento[i][9]}}
+    Nutrientes_Alimento.update(add)
+
+# Conjunto Costo Despacho Por Supermercado a bodega i # 
+
+Costos_Despacho = dict()
+for i in range(1, len(CostoDespacho)):
+    print(CostoDespacho[i])
+    add = {CostoDespacho[i][0]: {1: CostoDespacho[i][1],
+                                 2: CostoDespacho[i][2],
+                                 3: CostoDespacho[i][3],
+                                 4: CostoDespacho[i][4],
+                                 5: CostoDespacho[i][5],
+                                 6: CostoDespacho[i][6],
+                                 7: CostoDespacho[i][7],
+                                 8: CostoDespacho[i][8],
+                                 9: CostoDespacho[i][9]}}
+    Costos_Despacho.update(add)
+
+# Conjunto cantidad de nutriente por tipo de caja # 
+
+Nutrientes_Caja = dict()
+for i in range(1, len(NutrienteCaja)):
+    print(NutrienteCaja[i])
+    add = {NutrienteCaja[i][0]: {"Magnesio": NutrienteCaja[i][1],
+                                 "Calcio": NutrienteCaja[i][2],
+                                 "Fosforo":  NutrienteCaja[i][3],
+                                 "Sodio": NutrienteCaja[i][4],
+                                 "Potasio": NutrienteCaja[i][5],
+                                 "Hierro": NutrienteCaja[i][6],
+                                 "Zinc": NutrienteCaja[i][7],
+                                 "Yodo": NutrienteCaja[i][8]}}
+    Nutrientes_Caja.update(add)
+
+
+def obtener_nutriente_por_alimento(alimento, nutriente):
+    return Nutrientes_Alimento[alimento][nutriente]
+
+def obtener_costo_despacho_por_super(super, bodega):
+    return Costos_Despacho[super][bodega]
+
+def obtener_nutrientes_por_caja(caja, nutriente):
+    return Nutrientes_Caja[caja][nutriente]
