@@ -31,3 +31,9 @@ tablaCD = PrettyTable()
 tablaCD.field_names = CostoDespacho[0]
 for i in range(1, len(CostoDespacho)):
     tablaCD.add_row(CostoDespacho[i])
+
+
+for row in tablaNC:
+    row.border = False
+    row.header = False
+    a = row.get_string(fields=["Calcio(mg/d)"]).strip()
