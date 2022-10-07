@@ -1,45 +1,17 @@
-Alimento / Nutrientes(en mg) / Unidad,1 Unidad en kg,Magnesio,Calcio,Fósforo,Sodio ,Potasio,Hierro,Zinc,Yodo,,
-Aceite de maravilla ,1,0,0,0,0,0,0,0,0,,-Fuentes: https://www.nutricionyentrenamiento.fit/alimento-fiit/399-aceite-de-girasol/
-Arroz,1,310,600,1500,200,1090,400,0,0,,-Fuentes: https://www.midagri.gob.pe/portal/26-sector-agrario/arroz/216-arroz?start=3
-Avena,"0,7",1239,557,3661,14,3003,41,0,0,,-Fuentes: https://www.lavanguardia.com/comer/materia-prima/20180806/6330/avena-propiedades-beneficios-valor-nutricional.html y https://www.eluniverso.com/larevista/2020/08/30/nota/7960723/avena-propiedades-beneficios-valor-nutricional-cereales/
-Azúcar ,1,0,0,0,0,0,0,0,0,,-Fuentes: https://www.nutricionyentrenamiento.fit/alimento-fiit/406-azucar-de-mesa/
-Crema de Leche,"0,2",0,130,124,0,0,0,0,0,,-Fuentes: https://mejorconsalud.as.com/crema-leche-propiedades-tipos-consejos/
-Espirales,"0,4",572,0,1032,28,920,14,4,0,,-Fuentes: https://www.infoalimentacion.com/cereales/propiedades_nutricionales_pasta.htm y https://www.lavanguardia.com/comer/materia-prima/20190101/453826932338/pasta-propiedades-beneficios-valor-nutricional.html
-Garbanzos,1,1600,1450,3750,2600,7970,67,8,0,,-Fuentes : https://fen.org.es/MercadoAlimentosFEN/pdfs/garbanzos.pdf
-Harina,1,0,170,1080,20,1460,10,0,0,,-Fuentes: https://www.vegaffinity.com/comunidad/alimento/harina-de-trigo-beneficios-informacion-nutricional--f146
-Jugo en Polvo,"0,02",0,0,0,6,0,0,0,0,,-Fuentes: https://www.myfitnesspal.com/es/food/calories/jugo-en-polvo-522124425
-Jurel,"0,425",140,0,978,1687,1700,5525,3,34,,-Fuentes: https://pescadosymariscos.consumer.es/propiedades-nutritivas
-Leche entera en polvo,1,109,117,993,500,1720,1,4,0,,-Fuentes: https://www.yazio.com/es/alimentos/leche-en-polvo.html
-Leche entera líquida,1,116,1240,920,500,1570,1,3,0,,-Fuentes : https://fen.org.es/MercadoAlimentosFEN/pdfs/garbanzos.pdf
-Lentejas,1,740,190,1000,2260,4630,69,38,,,-Fuentes : https://sevilla.abc.es/gurme/recetas/alimentos/sevi-lentejas-202201261611_noticia.html y https://www.lavanguardia.com/vivo/ecologia/20170203/413987499802/lentejas-nutricion-colesterol-corazon-energia-proteinas-fibra.html
-Sal,1,0,29,0,3880,0,2,0,0,,-Fuentes: https://www.vegaffinity.com/comunidad/alimento/sal-beneficios-informacion-nutricional--f100
-Salsa de tomate,"0,2",392,319,637,12840,8110,25,5,0,,-Fuentes: https://www.yazio.com/es/alimentos/salsa-de-tomate.html
-Sucedaneo de cafe ,"0,1",0,0,0,0,0,0,0,0,,-Fuentes : https://www.myfitnesspal.com/es/food/calories/sucedaneo-de-cafe-548985561
-Té para preparar,"0,04",0,0,0,3,33,0,0,0,,-Fuentes: https://www.fatsecret.cl/calor%C3%ADas-nutrici%C3%B3n/gen%C3%A9rico/t%C3%A9-sin-az%C3%BAcar
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-,,,,,,,,,,,
-Podría ser útil: https://www.fao.org/3/w0073s/w0073s1x.htm,,,,,,,,,,,
+Alimento / Nutrientes(en mg) / Unidad,1 Unidad en kg,Magnesio,Calcio,Fósforo,Sodio ,Potasio,Hierro,Zinc,Yodo
+Aceite de maravilla,1,0,0,0,0,0,0,0,0
+Arroz,1,310,600,1500,200,1090,400,0,0
+Avena,0.7,1239,557,3661,14,3003,41,0,0
+Azúcar,1,0,0,0,0,0,0,0,0
+Crema de Leche,0.2,0,130,124,0,0,0,0,0
+Espirales,0.4,572,0,1032,28,920,14,4,0
+Harina,1,0,170,1080,20,1460,10,0,0
+Jugo en Polvo,0.02,0,0,0,6,0,0,0,0
+Jurel,0.425,140,0,978,1687,1700,5525,3,34
+Leche entera en polvo,1,109,117,993,500,1720,1,4,0
+Leche entera líquida,1,116,1240,920,500,1570,1,3,0
+Lentejas,1,740,190,1000,2260,4630,69,38,0
+Sal,1,0,29,0,3880,0,2,0,0
+Salsa de tomate,0.2,392,319,637,12840,8110,25,5,0
+Sucedaneo de cafe,0.1,0,0,0,0,0,0,0,0
+Té para preparar,0.04,0,0,0,3,33,0,0,0
