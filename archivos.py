@@ -32,9 +32,17 @@ tablaCD.field_names = CostoDespacho[0]
 for i in range(1, len(CostoDespacho)):
     tablaCD.add_row(CostoDespacho[i])
 
+PrecioAlimento = []
+with open("./BDD/PrecioAlimento.csv", encoding="UTF-8") as file:
+    read = csv.reader(file)
+    for row in read:
+        PrecioAlimento.append(row)
+tablaPA = PrettyTable()
+tablaPA.field_names = PrecioAlimento[0]
+for i in range(1, len(PrecioAlimento)):
+    tablaPA.add_row(PrecioAlimento[i])
 
-print(tablaNA)
-
+print(tablaPA)
 
 # Conjunto Nutrientes por Alimento #
 
@@ -56,7 +64,6 @@ for i in range(1, len(NutrienteAlimento)):
 
 Costos_Despacho = dict()
 for i in range(1, len(CostoDespacho)):
-    print(CostoDespacho[i])
     add = {CostoDespacho[i][0]: {1: CostoDespacho[i][1],
                                  2: CostoDespacho[i][2],
                                  3: CostoDespacho[i][3],
@@ -72,7 +79,6 @@ for i in range(1, len(CostoDespacho)):
 
 Nutrientes_Caja = dict()
 for i in range(1, len(NutrienteCaja)):
-    print(NutrienteCaja[i])
     add = {NutrienteCaja[i][0]: {"Magnesio": NutrienteCaja[i][1],
                                  "Calcio": NutrienteCaja[i][2],
                                  "Fosforo":  NutrienteCaja[i][3],
@@ -83,6 +89,15 @@ for i in range(1, len(NutrienteCaja)):
                                  "Yodo": NutrienteCaja[i][8]}}
     Nutrientes_Caja.update(add)
 
+Precio_Alimentos = dict()
+for i in range(1, len(PrecioAlimento)):
+    print(PrecioAlimento[i])
+    add = {PrecioAlimento[i][0]: {"Lider": PrecioAlimento[i][1],
+                                  "Tottus": PrecioAlimento[i][2],
+                                  "Unimcarc": PrecioAlimento[i][3],
+                                  "Acuenta": PrecioAlimento[i][4]}}
+    Precio_Alimentos.update(add)
+print(Precio_Alimentos)
 
 def obtener_nutriente_por_alimento(alimento, nutriente):
     return Nutrientes_Alimento[alimento][nutriente]
@@ -92,3 +107,9 @@ def obtener_costo_despacho_por_super(super, bodega):
 
 def obtener_nutrientes_por_caja(caja, nutriente):
     return Nutrientes_Caja[caja][nutriente]
+
+def masa_alimento(alimento):
+    return Nutrientes_Alimento[alimento]["Unidad x Kg"]
+
+def obtener_precio_por_alimentos(alimento, super):
+    return Precio_Alimentos[alimento][super]
