@@ -100,7 +100,7 @@ modelo.addConstrs((quicksum(A_an[a, n] * o_aj for a in A) == R_nj for j in J for
 
 modelo.addConstrs((o_aj[a,j] <= 3 for a in A for j in J), name = "R6")
 
-modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R6")
+modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R7")
 
 # Restricción 8 #
 
@@ -121,7 +121,9 @@ modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= Nma for m in M for a in 
 modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k for k in K), name = "R16")
 
 
+modelo.update()
 
 
-
-
+funcion_objetivo = quicksum(x_jk[j, k] for j in J for k in K)
+modelo.setObjective(funcion_objetivo, GRB.MAXIMIZE)
+modelo.optimize()
