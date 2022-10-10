@@ -91,13 +91,14 @@ for i in range(1, len(NutrienteCaja)):
 
 Precio_Alimentos = dict()
 for i in range(1, len(PrecioAlimento)):
-    print(PrecioAlimento[i])
     add = {PrecioAlimento[i][0]: {"Lider": PrecioAlimento[i][1],
                                   "Tottus": PrecioAlimento[i][2],
                                   "Unimcarc": PrecioAlimento[i][3],
                                   "Acuenta": PrecioAlimento[i][4]}}
     Precio_Alimentos.update(add)
-print(Precio_Alimentos)
+
+
+
 
 def obtener_nutriente_por_alimento(alimento, nutriente):
     return Nutrientes_Alimento[alimento][nutriente]
@@ -106,6 +107,7 @@ def obtener_costo_despacho_por_super(super, bodega):
     return Costos_Despacho[super][bodega]
 
 def obtener_nutrientes_por_caja(caja, nutriente):
+    print("entra aqui")
     return Nutrientes_Caja[caja][nutriente]
 
 def masa_alimento(alimento):
