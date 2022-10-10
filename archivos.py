@@ -42,7 +42,27 @@ tablaPA.field_names = PrecioAlimento[0]
 for i in range(1, len(PrecioAlimento)):
     tablaPA.add_row(PrecioAlimento[i])
 
-print(tablaPA)
+StockAlimentos = []
+with open("./BDD/StockAlimentos.csv", encoding="UTF-8") as file:
+    read = csv.reader(file)
+    for row in read:
+        StockAlimentos.append(row)
+tablaSA = PrettyTable()
+tablaSA.field_names = StockAlimentos[0]
+for i in range(1, len(StockAlimentos)):
+    tablaSA.add_row(StockAlimentos[i])
+
+LugaresAcopio = []
+with open("./BDD/LugaresAcopio.csv", encoding="UTF-8") as file:
+    read = csv.reader(file)
+    for row in read:
+        LugaresAcopio.append(row)
+tablaLA = PrettyTable()
+tablaLA.field_names = LugaresAcopio[0]
+for i in range(1, len(LugaresAcopio)):
+    tablaLA.add_row(LugaresAcopio[i])
+
+print(tablaLA)
 
 # Conjunto Nutrientes por Alimento #
 
@@ -98,6 +118,20 @@ for i in range(1, len(PrecioAlimento)):
     Precio_Alimentos.update(add)
 
 
+Stock_Alimentos = dict()
+for i in range(1, len(StockAlimentos)):
+    add = {StockAlimentos[i][0]: {"Lider": StockAlimentos[i][1],
+                                  "Tottus": StockAlimentos[i][2],
+                                  "Unimcarc": StockAlimentos[i][3],
+                                  "Acuenta": StockAlimentos[i][4]}}
+    Stock_Alimentos.update(add)
+
+
+Lugares_Acopio = dict()
+for i in range(1, len(LugaresAcopio)):
+    add = {LugaresAcopio[i][0]: {"m2 utiles": LugaresAcopio[i][1],
+                                  "precio": LugaresAcopio[i][2]}}
+    Lugares_Acopio.update(add)
 
 
 def obtener_nutriente_por_alimento(alimento, nutriente):
@@ -115,3 +149,12 @@ def masa_alimento(alimento):
 
 def obtener_precio_por_alimentos(alimento, super):
     return Precio_Alimentos[alimento][super]
+
+def stock_alimentos(alimento, super):
+    return Stock_Alimentos[alimento][super]
+
+def metros_utiles(comuna):
+    return Lugares_Acopio[comuna]["m2 utiles"] # como comuna recibe un numero
+
+def precio_arriendo(comuna):
+    return Lugares_Acopio[comuna]["precio"]

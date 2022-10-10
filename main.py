@@ -1,8 +1,10 @@
 from archivos import tablaNA, tablaNC, tablaCD
 from archivos import NutrienteCaja, NutrienteAlimento, CostoDespacho
 from gurobipy import Model, GRB, quicksum
-from archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi
+from archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
 from random import randint
+from archivos import metros_utiles as H_k, precio_arriendo as F_i
+
 
 modelo = Model("Grupo 69")
 # modelo.setParam("TimeLimit", 1800)
@@ -14,8 +16,8 @@ M = ["Lider", "Tottus", "Unimarc", "Acuenta"]
 A = ["Aceite de maravilla", "Arroz", "Avena", "Azúcar", "Crema de Leche", "Espirales", "Harina", "Jugo en Polvo",
      "Jurel", "Leche entera en polvo", "Leche entera líquida", "Lentejas", "Sal", "Salsa de tomate", "Sucedaneo de cafe", "Te para preparar"]
 N = ["Magnesio", "Calcio", "Fosforo", "Sodio", "Potasio", "Hierro", "Zinc", "Yodo"]
-I = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-K = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
+I = ["1", "2", "3","4", "5", "6","7", "8", "9","10"]
+K = ["1", "2", "3","4", "5", "6","7", "8", "9","10"]
 B = ["1", "2", "3","4", "5"]
 E = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
 T = ["1", "2", "3","4", "5"]
@@ -27,15 +29,15 @@ D_ik = None
 C_max = 7000
 H = 25000
 U = 220.45
-F_i = None
-H_k = None
+##  F_i LISTO  ##
+##  H_k LISTO  ##
 # R_nj = "LISTO"  ##
 # A_an = "LISTO"  ##
 E_t = 300
 ##   M_a LISTO  ## 
 L = 1200
 Pre = 85000000000
-N_ma = None
+##  N_ma LISTO  ## 
 ##  P_am LISTO  ##
 ##  C_mi LISTO  ##
 
@@ -129,7 +131,7 @@ for k in K:
 
 # Restricción 11 #
 
-modelo.addConstrs(((quicksum(F_i[i] for i in I) * z_i[i] + quicksum(phi_bki[b,k,i] for b in B for k in K for i in I) * (H + D_ik * (L + U)) + quicksum(x_jk[j, k] for j in J for k in K) * E_t + quicksum(y_aim[a,i,m] for a in A for i in I for m in M) * P_am(a, m) + quicksum(C_mi[m,i]*v_mi[m,i] for m in M for i in I)) <= Pre for a in A for m in M), name = "R11")
+modelo.addConstrs(((quicksum(F_i(i) for i in I) * z_i[i] + quicksum(phi_bki[b,k,i] for b in B for k in K for i in I) * (H + D_ik * (L + U)) + quicksum(x_jk[j, k] for j in J for k in K) * E_t + quicksum(y_aim[a,i,m] for a in A for i in I for m in M) * P_am(a, m) + quicksum(C_mi[m,i]*v_mi[m,i] for m in M for i in I)) <= Pre for a in A for m in M), name = "R11")
 
 # Restricción 12 #
 
@@ -148,7 +150,7 @@ modelo.addConstrs((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) ==
 
 modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= N_ma for m in M for a in A), name = "R15")
 
-modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k for k in K), name = "R16")
+modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k(k) for k in K), name = "R16")
 
 
 modelo.update()
