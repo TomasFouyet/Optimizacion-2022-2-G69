@@ -62,7 +62,17 @@ tablaLA.field_names = LugaresAcopio[0]
 for i in range(1, len(LugaresAcopio)):
     tablaLA.add_row(LugaresAcopio[i])
 
-print(tablaLA)
+
+Distancias = []
+with open("./BDD/Distancias.csv", encoding="UTF-8") as file:
+    read = csv.reader(file)
+    for row in read:
+        Distancias.append(row)
+tablaD = PrettyTable()
+tablaD.field_names = Distancias[0]
+for i in range(1, len(Distancias)):
+    tablaD.add_row(Distancias[i])
+
 
 # Conjunto Nutrientes por Alimento #
 
@@ -84,15 +94,16 @@ for i in range(1, len(NutrienteAlimento)):
 
 Costos_Despacho = dict()
 for i in range(1, len(CostoDespacho)):
-    add = {CostoDespacho[i][0]: {1: CostoDespacho[i][1],
-                                 2: CostoDespacho[i][2],
-                                 3: CostoDespacho[i][3],
-                                 4: CostoDespacho[i][4],
-                                 5: CostoDespacho[i][5],
-                                 6: CostoDespacho[i][6],
-                                 7: CostoDespacho[i][7],
-                                 8: CostoDespacho[i][8],
-                                 9: CostoDespacho[i][9]}}
+    add = {CostoDespacho[i][0]: {"Santa Rosa": CostoDespacho[i][1],
+                                 "San Diego": CostoDespacho[i][2],
+                                 "Sierra Bella": CostoDespacho[i][3],
+                                 "Club Hípico": CostoDespacho[i][4],
+                                 "Fantasilandia": CostoDespacho[i][5],
+                                 "Bulnes": CostoDespacho[i][6],
+                                 "Metro Los Orientales": CostoDespacho[i][7],
+                                 "Las Dalias": CostoDespacho[i][8],
+                                 "Estadio Manquehue": CostoDespacho[i][9],
+                                 "Macul": CostoDespacho[i][10]}}
     Costos_Despacho.update(add)
 
 # Conjunto cantidad de nutriente por tipo de caja # 
@@ -134,6 +145,24 @@ for i in range(1, len(LugaresAcopio)):
     Lugares_Acopio.update(add)
 
 
+Distancia = dict()
+for i in range(1, len(Distancias)):
+    add = {Distancias[i][0]: {"Santa Rosa": Distancias[i][1],
+                                  "San Diego": Distancias[i][2],
+                                  "Sierra Bella": Distancias[i][3],
+                                  "Club Hípico": Distancias[i][4],
+                                  "Fantasilandia": Distancias[i][5],
+                                  "Bulnes": Distancias[i][6],
+                                  "Metro Los Orientales": Distancias[i][7],
+                                  "Las Dalias": Distancias[i][8],
+                                  "Estadio Manquehue": Distancias[i][9],
+                                  "Macul": Distancias[i][10]}}
+    Distancia.update(add)
+for comuna in Distancia:
+    for sector in Distancia[comuna]:
+        Distancia[comuna][sector] = float(Distancia[comuna][sector])
+
+
 def obtener_nutriente_por_alimento(alimento, nutriente):
     return Nutrientes_Alimento[alimento][nutriente]
 
@@ -141,7 +170,6 @@ def obtener_costo_despacho_por_super(super, bodega):
     return Costos_Despacho[super][bodega]
 
 def obtener_nutrientes_por_caja(caja, nutriente):
-    print("entra aqui")
     return Nutrientes_Caja[caja][nutriente]
 
 def masa_alimento(alimento):
@@ -158,3 +186,16 @@ def metros_utiles(comuna):
 
 def precio_arriendo(comuna):
     return Lugares_Acopio[comuna]["precio"]
+
+def distancias(comuna, sector):
+    return Distancia[comuna][sector]
+
+
+def minimo(comuna):        
+    # print(Distancia[comuna])
+    # print(Distancia[comuna].values())
+    return min(Distancia[comuna].values())
+
+
+
+# print(minimo("Santiago"), minimo("Macul"), minimo("Providencia"))

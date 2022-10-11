@@ -3,7 +3,7 @@ from archivos import NutrienteCaja, NutrienteAlimento, CostoDespacho
 from gurobipy import Model, GRB, quicksum
 from archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
 from random import randint
-from archivos import metros_utiles as H_k, precio_arriendo as F_i
+from archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
 
 
 modelo = Model("Grupo 69")
@@ -16,16 +16,17 @@ M = ["Lider", "Tottus", "Unimarc", "Acuenta"]
 A = ["Aceite de maravilla", "Arroz", "Avena", "Azúcar", "Crema de Leche", "Espirales", "Harina", "Jugo en Polvo",
      "Jurel", "Leche entera en polvo", "Leche entera líquida", "Lentejas", "Sal", "Salsa de tomate", "Sucedaneo de cafe", "Te para preparar"]
 N = ["Magnesio", "Calcio", "Fosforo", "Sodio", "Potasio", "Hierro", "Zinc", "Yodo"]
-I = ["1", "2", "3","4", "5", "6","7", "8", "9","10"]
-K = ["1", "2", "3","4", "5", "6","7", "8", "9","10"]
+I = ["Santa Rosa", "San Diego", "Sierra Bella","Club Hípico", "Fantasilandia", "Bulnes","Metro Los Orientales", "Las Dalias", "Estadio Manquehue","Macul"]
+K = ["Santiago", "Recoleta", "Estación Central","Ñuñoa", "Macul", "Peñalolén","La Florida", "La Pintana", "El bosque","Providencia","San Bernardo","La Granja","San Miguel", "Cerrillos","Independencia"]
 B = ["1", "2", "3","4", "5"]
 E = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
 T = ["1", "2", "3","4", "5"]
-F = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15", "16", "17", "18","19", "20"]
+F = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 
 # Agregar Parametros #
 
-D_ik = None
+
+##  D_ik LISTO  ##
 C_max = 7000
 H = 25000
 U = 220.45
@@ -47,25 +48,25 @@ Q_fjk = None
 # Agregar Variables #
  
 # Cantidad de cajas “j” asignadas en un lugar de acopio “k”.#
-x_jk = modelo.addVars(J, K, GRB.INTEGER, name="x_jk")
+x_jk = modelo.addVars(J, K, vtype=GRB.INTEGER, name="x_jk")
 
 #Cantidad de alimento “a” enviado a “i” que es comprado a proveedor “m”.#
-y_aim = modelo.addVars(A, I, M, GRB.INTEGER, name="y_aim")
+y_aim = modelo.addVars(A, I, M, vtype=GRB.INTEGER, name="y_aim")
 
 # 1 si se esta utilizando la bodega "i" #
-z_i = modelo.addVars(I, GRB.BINARY, name="z_i")
+z_i = modelo.addVars(I, vtype=GRB.BINARY, name="z_i")
 
 # 1 si se compra al proveedor “m” y hace envío a bodega “i” # 
-v_mi = modelo.addVars(M, I, GRB.BINARY, name="v_mi")
+v_mi = modelo.addVars(M, I, vtype=GRB.BINARY, name="v_mi")
 
 # 1 si el camión “b” tiene asignado un lugar de acopio “k” #
-phi_bki = modelo.addVars(B, K, I, GRB.BINARY, name="phi_bk")
+phi_bki = modelo.addVars(B, K, I, vtype=GRB.BINARY, name="phi_bk")
 
 #cantidad de unidades de alimento “a” en la caja de tipo “j”
-o_aj = modelo.addVars(A, J, GRB.INTEGER, name="o_aj")
+o_aj = modelo.addVars(A, J, vtype=GRB.INTEGER, name="o_aj")
 
 # 1 si familia “i” vive cercano a centro de entrega “k” y se le entrega una caja tipo “j” #
-u_fjk = modelo.addVars(F, J, K, GRB.BINARY, name="u_fjk")
+u_fjk = modelo.addVars(F, J, K, vtype=GRB.BINARY, name="u_fjk")
 
 
 
@@ -73,16 +74,16 @@ u_fjk = modelo.addVars(F, J, K, GRB.BINARY, name="u_fjk")
 
 # VARIABLES EN REVISIÓN #
 #1 si el camión “b” está siendo utilizado por un transportista “t”# EN REVISION
-w_bt = modelo.addVars(B, T, GRB.BINARY, name="w_bt")
+w_bt = modelo.addVars(B, T, vtype=GRB.BINARY, name="w_bt")
 
 # 1 si el trabajador “e” ya está en una bodega “i” #
-g_ei = modelo.addVars(E, I, GRB.BINARY, name="g_ei")
+g_ei = modelo.addVars(E, I, vtype=GRB.BINARY, name="g_ei")
 
 #1 si la caja de tipo “j” está asociada a un camión “b”#
-lambda_jb = modelo.addVars(J, B, GRB.BINARY, name="lambda_jb")
+lambda_jb = modelo.addVars(J, B, vtype=GRB.BINARY, name="lambda_jb")
 
 # Si la caja de tipo “j” se encuentra en la bodega “i” y 0 e.c.o.c #
-y_ji = modelo.addVars(E, I, GRB.BINARY, name="y_ji")
+y_ji = modelo.addVars(E, I, vtype=GRB.BINARY, name="y_ji")
 
 
 modelo.update()
@@ -90,23 +91,23 @@ modelo.update()
 
 # Agregar Restricciones #
 
-modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk for j in J for k in K), name = "R1")
+modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk[j, k] for j in J for k in K), name = "R1")
 
-modelo.addConstrs((u_fjk[f,j,k] >= u_fjk[f+1,j,k] for f in F for j in J for k in K), name = "R2")
+modelo.addConstrs((u_fjk[f,j,k] >= u_fjk[f+1,j,k] for f in range(1,len(F)-1) for j in J for k in K), name = "R2")
 
-modelo.addConstrs((Q_fjk[f,j,k] >= u_fjk[f,j,k] for f in F for j in J for k in K), name = "R3")
+# modelo.addConstrs((Q_fjk[f,j,k] >= u_fjk[f,j,k] for f in F for j in J for k in K), name = "R3")
 
 # Restricción 4 implicita #
 
 print(o_aj.keys())
-for a in A:
-     for n in N:
-          print(A_an(a, n))
+#for a in A:
+#     for n in N:
+#          print(A_an(a, n))
 
 for j in J:
      for n in N:
           # modelo.addConstrs((quicksum(A_an(a, n) * o_aj[a, int(j)] for a in A) <= R_nj(j, n)), name = "R5")
-          modelo.addConstrs(((quicksum(A_an(a, n) * o_aj[a, j] for a in A)) <= R_nj(n, j)), name = "R5")
+          modelo.addConstr(((quicksum(int(A_an(a, n)) * o_aj[a, j] for a in A)) <= int(R_nj(j, n))), name = "R5")
 
 
 modelo.addConstrs((o_aj[a,j] <= 3 for a in A for j in J), name = "R6")
@@ -119,14 +120,15 @@ modelo.addConstrs(((quicksum(phi_bki[b, k, i] for k in K for i in I)) <= 1 for b
 
 # Restricción 9 #
 
-modelo.addConstrs(((quicksum(phi_bki[b, k, i] for b in B)) * C_max <= quicksum(x_jk[j ,k] * M_a(a) * o_aj for j in J for a in A) for k in K for i in I), name = "R9")
+modelo.addConstrs(((quicksum(phi_bki[b, k, i] for b in B)) * C_max <= quicksum(x_jk[j ,k] * float(M_a(a)) * o_aj[a,j] for j in J for a in A) for k in K for i in I), name = "R9")
 
 # Restricción 10 #
 
 for k in K:
      for i in I:
           for b in B:
-               modelo.addConstr((D_ik -(min(D_ik))>=(1-(phi_bki[b,k,i])) ), name = "R10")
+               if D_ik(k,i) != minimo(k):
+                    modelo.addConstr((D_ik(k, i) -(minimo(k))>=(1-(phi_bki[b,k,i])) ), name = "R10")
 
 
 # Restricción 11 #
