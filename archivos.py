@@ -124,7 +124,7 @@ Precio_Alimentos = dict()
 for i in range(1, len(PrecioAlimento)):
     add = {PrecioAlimento[i][0]: {"Lider": PrecioAlimento[i][1],
                                   "Tottus": PrecioAlimento[i][2],
-                                  "Unimcarc": PrecioAlimento[i][3],
+                                  "Unimarc": PrecioAlimento[i][3],
                                   "Acuenta": PrecioAlimento[i][4]}}
     Precio_Alimentos.update(add)
 
@@ -133,7 +133,7 @@ Stock_Alimentos = dict()
 for i in range(1, len(StockAlimentos)):
     add = {StockAlimentos[i][0]: {"Lider": StockAlimentos[i][1],
                                   "Tottus": StockAlimentos[i][2],
-                                  "Unimcarc": StockAlimentos[i][3],
+                                  "Unimarc": StockAlimentos[i][3],
                                   "Acuenta": StockAlimentos[i][4]}}
     Stock_Alimentos.update(add)
 
@@ -197,5 +197,5 @@ def minimo(comuna):
     return min(Distancia[comuna].values())
 
 
-
+print(Stock_Alimentos)
 # print(minimo("Santiago"), minimo("Macul"), minimo("Providencia"))

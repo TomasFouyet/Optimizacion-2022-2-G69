@@ -19,8 +19,8 @@ N = ["Magnesio", "Calcio", "Fosforo", "Sodio", "Potasio", "Hierro", "Zinc", "Yod
 I = ["Santa Rosa", "San Diego", "Sierra Bella","Club Hípico", "Fantasilandia", "Bulnes","Metro Los Orientales", "Las Dalias", "Estadio Manquehue","Macul"]
 K = ["Santiago", "Recoleta", "Estación Central","Ñuñoa", "Macul", "Peñalolén","La Florida", "La Pintana", "El bosque","Providencia","San Bernardo","La Granja","San Miguel", "Cerrillos","Independencia"]
 B = ["1", "2", "3","4", "5"]
-E = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
-T = ["1", "2", "3","4", "5"]
+#E = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
+#T = ["1", "2", "3","4", "5"]
 F = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 
 # Agregar Parametros #
@@ -74,16 +74,16 @@ u_fjk = modelo.addVars(F, J, K, vtype=GRB.BINARY, name="u_fjk")
 
 # VARIABLES EN REVISIÓN #
 #1 si el camión “b” está siendo utilizado por un transportista “t”# EN REVISION
-w_bt = modelo.addVars(B, T, vtype=GRB.BINARY, name="w_bt")
+#w_bt = modelo.addVars(B, T, vtype=GRB.BINARY, name="w_bt")
 
 # 1 si el trabajador “e” ya está en una bodega “i” #
-g_ei = modelo.addVars(E, I, vtype=GRB.BINARY, name="g_ei")
+#g_ei = modelo.addVars(E, I, vtype=GRB.BINARY, name="g_ei")
 
 #1 si la caja de tipo “j” está asociada a un camión “b”#
-lambda_jb = modelo.addVars(J, B, vtype=GRB.BINARY, name="lambda_jb")
+#lambda_jb = modelo.addVars(J, B, vtype=GRB.BINARY, name="lambda_jb")
 
 # Si la caja de tipo “j” se encuentra en la bodega “i” y 0 e.c.o.c #
-y_ji = modelo.addVars(E, I, vtype=GRB.BINARY, name="y_ji")
+#y_ji = modelo.addVars(E, I, vtype=GRB.BINARY, name="y_ji")
 
 
 modelo.update()
@@ -112,7 +112,7 @@ for j in J:
 
 modelo.addConstrs((o_aj[a,j] <= 3 for a in A for j in J), name = "R6")
 
-modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R7")
+#modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R7")
 
 # Restricción 8 #
 
@@ -120,7 +120,7 @@ modelo.addConstrs(((quicksum(phi_bki[b, k, i] for k in K for i in I)) <= 1 for b
 
 # Restricción 9 #
 
-modelo.addConstrs(((quicksum(phi_bki[b, k, i] for b in B)) * C_max <= quicksum(x_jk[j ,k] * float(M_a(a)) * o_aj[a,j] for j in J for a in A) for k in K for i in I), name = "R9")
+#modelo.addConstrs(((quicksum(phi_bki[b, k, i] for b in B)) * C_max <= quicksum(x_jk[j ,k] * float(M_a(a)) * o_aj[a,j] for j in J for a in A) for k in K for i in I), name = "R9")
 
 # Restricción 10 #
 
@@ -128,12 +128,13 @@ for k in K:
      for i in I:
           for b in B:
                if D_ik(k,i) != minimo(k):
-                    modelo.addConstr((D_ik(k, i) -(minimo(k))>=(1-(phi_bki[b,k,i])) ), name = "R10")
+                    pass
+                    modelo.addConstr((float(D_ik(k, i) -(minimo(k)))>=(1-(phi_bki[b,k,i])) ), name = "R10")
 
 
 # Restricción 11 #
 
-modelo.addConstrs(((quicksum(F_i(i) for i in I) * z_i[i] + quicksum(phi_bki[b,k,i] for b in B for k in K for i in I) * (H + D_ik * (L + U)) + quicksum(x_jk[j, k] for j in J for k in K) * E_t + quicksum(y_aim[a,i,m] for a in A for i in I for m in M) * P_am(a, m) + quicksum(C_mi[m,i]*v_mi[m,i] for m in M for i in I)) <= Pre for a in A for m in M), name = "R11")
+modelo.addConstrs(((quicksum(float(F_i(i)) for i in I) * z_i[i] + quicksum(phi_bki[b,k,i] for b in B for k in K for i in I) * (H + float(D_ik(k, i)) * (L + U)) + quicksum(x_jk[j, k] for j in J for k in K) * E_t + quicksum(y_aim[a,i,m] for a in A for i in I for m in M) * int(P_am(a, m)) + quicksum(int(C_mi(m,i))*v_mi[m,i] for m in M for i in I)) <= Pre for a in A for m in M), name = "R11")
 
 # Restricción 12 #
 
@@ -148,11 +149,11 @@ modelo.addConstrs((quicksum(phi_bki[b,k,i] for b in B for k in K) >= z_i[i] for 
 
 # Restricción 14 #
 
-modelo.addConstrs((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(o_aj[a, j] for a in A for j in J), name = "R14")
+#modelo.addConstr((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(o_aj[a, j] for a in A for j in J), name = "R14")
 
-modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= N_ma for m in M for a in A), name = "R15")
+modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= int(N_ma(a, m)) for m in M for a in A), name = "R15")
 
-modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k(k) for k in K), name = "R16")
+#modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k(k) for k in K), name = "R16")
 
 
 modelo.update()
@@ -161,3 +162,6 @@ modelo.update()
 funcion_objetivo = quicksum(x_jk[j, k] for j in J for k in K)
 modelo.setObjective(funcion_objetivo, GRB.MAXIMIZE)
 modelo.optimize()
+#for constr in modelo.getConstrs():
+    #print(constr, constr.getAttr("slack"))
+#modelo.printAttr("X")
