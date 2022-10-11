@@ -91,7 +91,7 @@ modelo.update()
 
 # Agregar Restricciones #
 
-modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk[j, k] for j in J for k in K), name = "R1")
+#modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk[j, k] for j in J for k in K), name = "R1")
 
 modelo.addConstrs((u_fjk[f,j,k] >= u_fjk[f+1,j,k] for f in range(1,len(F)-1) for j in J for k in K), name = "R2")
 
@@ -104,19 +104,19 @@ print(o_aj.keys())
 #     for n in N:
 #          print(A_an(a, n))
 
-for j in J:
-     for n in N:
+#for j in J:
+     #for n in N:
           # modelo.addConstrs((quicksum(A_an(a, n) * o_aj[a, int(j)] for a in A) <= R_nj(j, n)), name = "R5")
-          modelo.addConstr(((quicksum(int(A_an(a, n)) * o_aj[a, j] for a in A)) <= int(R_nj(j, n))), name = "R5")
+          #modelo.addConstr(((quicksum(int(A_an(a, n)) * o_aj[a, j] for a in A)) <= int(R_nj(j, n))), name = "R5")
 
 
-modelo.addConstrs((o_aj[a,j] <= 3 for a in A for j in J), name = "R6")
+#modelo.addConstrs((o_aj[a,j] <= 3 for a in A for j in J), name = "R6")
 
 #modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R7")
 
 # Restricción 8 #
 
-modelo.addConstrs(((quicksum(phi_bki[b, k, i] for k in K for i in I)) <= 1 for b in B), name = "R8")
+#modelo.addConstrs(((quicksum(phi_bki[b, k, i] for k in K for i in I)) <= 1 for b in B), name = "R8")
 
 # Restricción 9 #
 
@@ -139,19 +139,19 @@ modelo.addConstrs(((quicksum(float(F_i(i)) for i in I) * z_i[i] + quicksum(phi_b
 # Restricción 12 #
 
 Big_M = 10^10
-modelo.addConstrs((Big_M * z_i[i] >= quicksum(y_aim[a,i,m] for a in A for m in M) for i in I), name = "R12.1")
-modelo.addConstrs((z_i[i] * 4 >= quicksum(v_mi[m,i] for m in M) for i in I), name = "R12.2")
-modelo.addConstrs(((quicksum(y_aim[a, i, m] for a in A)) <= v_mi[m,i] for m in M for i in I), name = "R12.3")
+#modelo.addConstrs((Big_M * z_i[i] >= quicksum(y_aim[a,i,m] for a in A for m in M) for i in I), name = "R12.1")
+#modelo.addConstrs((z_i[i] * 4 >= quicksum(v_mi[m,i] for m in M) for i in I), name = "R12.2")
+#modelo.addConstrs(((quicksum(y_aim[a, i, m] for a in A)) <= v_mi[m,i] for m in M for i in I), name = "R12.3")
 
 # Restricción 13 #
 
-modelo.addConstrs((quicksum(phi_bki[b,k,i] for b in B for k in K) >= z_i[i] for i in I), name = "R13")
+#modelo.addConstrs((quicksum(phi_bki[b,k,i] for b in B for k in K) >= z_i[i] for i in I), name = "R13")
 
 # Restricción 14 #
 
 #modelo.addConstr((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(o_aj[a, j] for a in A for j in J), name = "R14")
 
-modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= int(N_ma(a, m)) for m in M for a in A), name = "R15")
+#modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= int(N_ma(a, m)) for m in M for a in A), name = "R15")
 
 #modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k(k) for k in K), name = "R16")
 
@@ -162,6 +162,38 @@ modelo.update()
 funcion_objetivo = quicksum(x_jk[j, k] for j in J for k in K)
 modelo.setObjective(funcion_objetivo, GRB.MAXIMIZE)
 modelo.optimize()
+
 #for constr in modelo.getConstrs():
-    #print(constr, constr.getAttr("slack"))
+    #if constr.getAttr("slack") == 0:
+     #print("----------------------------------------")
+     #print(f"La restricción {constr} está activa")
+     #print("----------------------------------------")
+
 #modelo.printAttr("X")
+
+
+
+
+for j in J:
+     for k in K:
+          print(f"hay {x_jk[j,k].x} cajas de tipo {j} en la municipalidad {k}")
+
+for i in I:
+     var = z_i[i].x
+     if var == 1:
+          print(f"La bodega {i} esta siendo utilizada")
+     if var == 0:
+          print("tamo hasta el loli")
+
+
+print("_____________________________________________")
+for m in M:
+          for i in I:
+               var = v_mi[m,i].x
+               print(var)
+               if var == 1:
+                    print(f"se compra a {m}")
+               if var == 0:
+                    print("tamo hasta el loli2")
+
+
