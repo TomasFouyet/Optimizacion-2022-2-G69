@@ -6,6 +6,7 @@ from random import randint
 from archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
 
 
+
 modelo = Model("Grupo 69")
 # modelo.setParam("TimeLimit", 1800)
 
@@ -41,6 +42,8 @@ Pre = 85000000000
 ##  N_ma LISTO  ## 
 ##  P_am LISTO  ##
 ##  C_mi LISTO  ##
+
+
 
 Q_fjk = None
 
@@ -91,11 +94,11 @@ modelo.update()
 
 # Agregar Restricciones #
 
-#modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk[j, k] for j in J for k in K), name = "R1")
+modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk[j, k] for j in J for k in K), name = "R1")
 
 modelo.addConstrs((u_fjk[f,j,k] >= u_fjk[f+1,j,k] for f in range(1,len(F)-1) for j in J for k in K), name = "R2")
 
-# modelo.addConstrs((Q_fjk[f,j,k] >= u_fjk[f,j,k] for f in F for j in J for k in K), name = "R3")
+#modelo.addConstrs((Q_fjk[f,j,k] >= u_fjk[f,j,k] for f in F for j in J for k in K), name = "R3")
 
 # Restricción 4 implicita #
 
@@ -104,13 +107,12 @@ print(o_aj.keys())
 #     for n in N:
 #          print(A_an(a, n))
 
-#for j in J:
-     #for n in N:
-          # modelo.addConstrs((quicksum(A_an(a, n) * o_aj[a, int(j)] for a in A) <= R_nj(j, n)), name = "R5")
-          #modelo.addConstr(((quicksum(int(A_an(a, n)) * o_aj[a, j] for a in A)) <= int(R_nj(j, n))), name = "R5")
+for j in J:
+     for n in N:
+          #modelo.addConstrs((quicksum(A_an(a, n) * o_aj[a, int(j)] for a in A) <= R_nj(j, n)), name = "R5")
+          modelo.addConstr(((quicksum(int(A_an(a, n)) * o_aj[a, j] for a in A)) >= int(R_nj(j, n))), name = "R5")
 
-
-#modelo.addConstrs((o_aj[a,j] <= 3 for a in A for j in J), name = "R6")
+#modelo.addConstrs((o_aj[a,j] <= 30 for a in A for j in J), name = "R6")
 
 #modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R7")
 
@@ -149,7 +151,7 @@ Big_M = 10^10
 
 # Restricción 14 #
 
-#modelo.addConstr((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(o_aj[a, j] for a in A for j in J), name = "R14")
+modelo.addConstr((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(o_aj[a, j] for a in A for j in J), name = "R14")
 
 #modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= int(N_ma(a, m)) for m in M for a in A), name = "R15")
 
@@ -195,5 +197,18 @@ for m in M:
                     print(f"se compra a {m}")
                if var == 0:
                     print("tamo hasta el loli2")
+
+
+print("_____________________________________________")
+for a in A:
+          for j in J:
+               var = o_aj[a,j].x
+               print(f"Hay {var} {a} en la caja {j}")
+
+#for a in A:
+          #for j in J:
+               #for n in N:
+                  #  var = o_aj[a,j].x
+                  #  print(f"Hay {int(var() * int(A_an(a, n))} nutrientes en la caja {j}")
 
 
