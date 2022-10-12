@@ -84,8 +84,6 @@ tablaAD.field_names = AlimentosCaja[0]
 for i in range(1, len(AlimentosCaja)):
     tablaAD.add_row(AlimentosCaja[i])
 
-print(tablaAD)
-
 # Conjunto Nutrientes por Alimento #
 
 Nutrientes_Alimento = dict()

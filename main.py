@@ -4,6 +4,8 @@ from gurobipy import Model, GRB, quicksum
 from archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
 from random import randint
 from archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
+from archivos import alimentos_por_caja as O_aj
+from prueba2 import obtener_valor as Q_fjk
 
 
 
@@ -22,7 +24,7 @@ K = ["Santiago", "Recoleta", "Estación Central","Ñuñoa", "Macul", "Peñalolé
 B = ["1", "2", "3","4", "5"]
 #E = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
 #T = ["1", "2", "3","4", "5"]
-F = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+F = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29", "30", "31","32", "33", "34","35", "36", "37","38", "39", "40", "41", "42", "43", "44", "45"]
 
 # Agregar Parametros #
 
@@ -44,8 +46,8 @@ Pre = 85000000000
 ##  C_mi LISTO  ##
 
 
-
-Q_fjk = None
+##  O_aj  LISTO  ##
+##  Q_fjk LISTO  ##
 
 
 # Agregar Variables #
@@ -66,7 +68,7 @@ v_mi = modelo.addVars(M, I, vtype=GRB.BINARY, name="v_mi")
 phi_bki = modelo.addVars(B, K, I, vtype=GRB.BINARY, name="phi_bk")
 
 #cantidad de unidades de alimento “a” en la caja de tipo “j”
-o_aj = modelo.addVars(A, J, vtype=GRB.INTEGER, name="o_aj")
+# o_aj = modelo.addVars(A, J, vtype=GRB.INTEGER, name="o_aj")
 
 # 1 si familia “i” vive cercano a centro de entrega “k” y se le entrega una caja tipo “j” #
 u_fjk = modelo.addVars(F, J, K, vtype=GRB.BINARY, name="u_fjk")
@@ -96,33 +98,24 @@ modelo.update()
 
 modelo.addConstrs((quicksum(u_fjk[f,j,k] for f in F) == x_jk[j, k] for j in J for k in K), name = "R1")
 
-modelo.addConstrs((u_fjk[f,j,k] >= u_fjk[f+1,j,k] for f in range(1,len(F)-1) for j in J for k in K), name = "R2")
+# modelo.addConstrs((u_fjk[f,j,k] >= u_fjk[f+1,j,k] for f in range(1,len(F)-1) for j in J for k in K), name = "R2")
 
-#modelo.addConstrs((Q_fjk[f,j,k] >= u_fjk[f,j,k] for f in F for j in J for k in K), name = "R3")
+#modelo.addConstrs((int(Q_fjk(f,j,k)) >= u_fjk[f,j,k] for f in F for j in J for k in K), name = "R3")
 
 # Restricción 4 implicita #
-
-print(o_aj.keys())
-#for a in A:
-#     for n in N:
-#          print(A_an(a, n))
 
 for j in J:
      for n in N:
           #modelo.addConstrs((quicksum(A_an(a, n) * o_aj[a, int(j)] for a in A) <= R_nj(j, n)), name = "R5")
-          modelo.addConstr(((quicksum(int(A_an(a, n)) * o_aj[a, j] for a in A)) >= int(R_nj(j, n))), name = "R5")
-
-#modelo.addConstrs((o_aj[a,j] <= 30 for a in A for j in J), name = "R6")
-
-#modelo.addConstrs((o_aj[a,j] >= 1 for a in A for j in J), name = "R7")
-
+          #modelo.addConstr(((quicksum(int(A_an(a, n)) * int(O_aj(a, j)) for a in A)) >= int(R_nj(j, n))), name = "R5")
+          pass
 # Restricción 8 #
 
 #modelo.addConstrs(((quicksum(phi_bki[b, k, i] for k in K for i in I)) <= 1 for b in B), name = "R8")
 
 # Restricción 9 #
 
-#modelo.addConstrs(((quicksum(phi_bki[b, k, i] for b in B)) * C_max <= quicksum(x_jk[j ,k] * float(M_a(a)) * o_aj[a,j] for j in J for a in A) for k in K for i in I), name = "R9")
+#modelo.addConstrs(((quicksum(phi_bki[b, k, i] for b in B)) * C_max <= quicksum(x_jk[j ,k] * float(M_a(a)) * int(O_aj(a,j)) for j in J for a in A) for k in K for i in I), name = "R9")
 
 # Restricción 10 #
 
@@ -130,13 +123,12 @@ for k in K:
      for i in I:
           for b in B:
                if D_ik(k,i) != minimo(k):
+                    #modelo.addConstr((float(D_ik(k, i) -(minimo(k)))>=(1-(phi_bki[b,k,i])) ), name = "R10")
                     pass
-                    modelo.addConstr((float(D_ik(k, i) -(minimo(k)))>=(1-(phi_bki[b,k,i])) ), name = "R10")
-
 
 # Restricción 11 #
 
-modelo.addConstrs(((quicksum(float(F_i(i)) for i in I) * z_i[i] + quicksum(phi_bki[b,k,i] for b in B for k in K for i in I) * (H + float(D_ik(k, i)) * (L + U)) + quicksum(x_jk[j, k] for j in J for k in K) * E_t + quicksum(y_aim[a,i,m] for a in A for i in I for m in M) * int(P_am(a, m)) + quicksum(int(C_mi(m,i))*v_mi[m,i] for m in M for i in I)) <= Pre for a in A for m in M), name = "R11")
+#modelo.addConstrs(((quicksum(float(F_i(i)) for i in I) * z_i[i] + quicksum(phi_bki[b,k,i] for b in B for k in K for i in I) * (H + float(D_ik(k, i)) * (L + U)) + quicksum(x_jk[j, k] for j in J for k in K) * E_t + quicksum(y_aim[a,i,m] for a in A for i in I for m in M) * int(P_am(a, m)) + quicksum(int(C_mi(m,i))*v_mi[m,i] for m in M for i in I)) <= Pre for a in A for m in M), name = "R11")
 
 # Restricción 12 #
 
@@ -151,7 +143,7 @@ Big_M = 10^10
 
 # Restricción 14 #
 
-modelo.addConstr((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(o_aj[a, j] for a in A for j in J), name = "R14")
+#modelo.addConstr((quicksum(y_aim[a, i, m] for a in A for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(int(O_aj(a, j)) for a in A for j in J), name = "R14")
 
 #modelo.addConstrs((quicksum(y_aim[a,i,m] for i in I) <= int(N_ma(a, m)) for m in M for a in A), name = "R15")
 
@@ -165,50 +157,14 @@ funcion_objetivo = quicksum(x_jk[j, k] for j in J for k in K)
 modelo.setObjective(funcion_objetivo, GRB.MAXIMIZE)
 modelo.optimize()
 
-#for constr in modelo.getConstrs():
-    #if constr.getAttr("slack") == 0:
-     #print("----------------------------------------")
-     #print(f"La restricción {constr} está activa")
-     #print("----------------------------------------")
+for constr in modelo.getConstrs():
+    if constr.getAttr("slack") == 0:
+     print("----------------------------------------")
+     print(f"La restricción {constr} está activa")
+     print("----------------------------------------")
 
-#modelo.printAttr("X")
-
-
-
+modelo.printAttr("X")
 
 for j in J:
      for k in K:
           print(f"hay {x_jk[j,k].x} cajas de tipo {j} en la municipalidad {k}")
-
-for i in I:
-     var = z_i[i].x
-     if var == 1:
-          print(f"La bodega {i} esta siendo utilizada")
-     if var == 0:
-          print("tamo hasta el loli")
-
-
-print("_____________________________________________")
-for m in M:
-          for i in I:
-               var = v_mi[m,i].x
-               print(var)
-               if var == 1:
-                    print(f"se compra a {m}")
-               if var == 0:
-                    print("tamo hasta el loli2")
-
-
-print("_____________________________________________")
-for a in A:
-          for j in J:
-               var = o_aj[a,j].x
-               print(f"Hay {var} {a} en la caja {j}")
-
-#for a in A:
-          #for j in J:
-               #for n in N:
-                  #  var = o_aj[a,j].x
-                  #  print(f"Hay {int(var() * int(A_an(a, n))} nutrientes en la caja {j}")
-
-
