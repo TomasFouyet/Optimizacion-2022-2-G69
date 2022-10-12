@@ -74,6 +74,18 @@ for i in range(1, len(Distancias)):
     tablaD.add_row(Distancias[i])
 
 
+AlimentosCaja = []
+with open("./BDD/AlimentosPorCaja.csv", encoding="UTF-8") as file:
+    read = csv.reader(file)
+    for row in read:
+        AlimentosCaja.append(row)
+tablaAD = PrettyTable()
+tablaAD.field_names = AlimentosCaja[0]
+for i in range(1, len(AlimentosCaja)):
+    tablaAD.add_row(AlimentosCaja[i])
+
+print(tablaAD)
+
 # Conjunto Nutrientes por Alimento #
 
 Nutrientes_Alimento = dict()
@@ -163,6 +175,12 @@ for comuna in Distancia:
         Distancia[comuna][sector] = float(Distancia[comuna][sector])
 
 
+ALimentos_Por_Caja = dict()
+for i in range(1, len(AlimentosCaja)):
+    add = {AlimentosCaja[i][0]: {"1": AlimentosCaja[i][1], "2": AlimentosCaja[i][2], "3": AlimentosCaja[i][3]}}
+    ALimentos_Por_Caja.update(add)
+
+
 def obtener_nutriente_por_alimento(alimento, nutriente):
     return Nutrientes_Alimento[alimento][nutriente]
 
@@ -196,6 +214,7 @@ def minimo(comuna):
     # print(Distancia[comuna].values())
     return min(Distancia[comuna].values())
 
+def alimentos_por_caja(alimento, caja):
+    return ALimentos_Por_Caja[alimento][caja]
 
-print(Stock_Alimentos)
 # print(minimo("Santiago"), minimo("Macul"), minimo("Providencia"))
