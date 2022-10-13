@@ -21,7 +21,7 @@ A = ["Aceite de maravilla", "Arroz", "Avena", "Azúcar", "Crema de Leche", "Espi
 N = ["Magnesio", "Calcio", "Fosforo", "Sodio", "Potasio", "Hierro", "Zinc", "Yodo"]
 I = ["Santa Rosa", "San Diego", "Sierra Bella","Club Hípico", "Fantasilandia", "Bulnes","Metro Los Orientales", "Las Dalias", "Estadio Manquehue","Macul"]
 K = ["Santiago", "Recoleta", "Estación Central","Ñuñoa", "Macul", "Peñalolén","La Florida", "La Pintana", "El bosque","Providencia","San Bernardo","La Granja","San Miguel", "Cerrillos","Independencia"]
-B = ["1", "2", "3","4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15", "16", "17"]
+B = ["1", "2", "3","4", "5", "6", "7", "8", "9", "10", "11", "12", "13","14", "15", "16"]
 #E = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15"]
 #T = ["1", "2", "3","4", "5"]
 F = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29", "30", "31","32", "33", "34","35", "36", "37","38", "39", "40", "41", "42", "43", "44", "45"]
@@ -95,13 +95,11 @@ modelo.addConstrs((z_i[i] * len(M) >= quicksum(v_mi[m,i] for m in M) for i in I)
 
 modelo.addConstrs(((quicksum(y_aim[a, i, m] for a in A)) >= z_i[i] for m in M for i in I), name = "R7")
 
-modelo.addConstrs(((quicksum(y_aim[a, i, m] for a in A)) <= v_mi[m, i] * Big_M for m in M for i in I), name = "8")
+modelo.addConstrs(((quicksum(y_aim[a, i, m] for a in A)) <= v_mi[m, i] * Big_M for m in M for i in I), name = "R8")
 
 modelo.addConstrs(((quicksum(phi_bki[b, k, i] for k in K for b in B)) <= z_i[i] * Big_M for i in I), name = "R9")
 
-
 modelo.addConstrs((quicksum(phi_bki[b,k,i] for b in B for k in K) >= z_i[i] for i in I), name = "R10")
-
 
 modelo.addConstrs(((quicksum(y_aim[a, i, m] for i in I for m in M)) == quicksum(x_jk[j ,k] for j in J for k in K) * quicksum(int(O_aj(a, j)) for j in J) for a in A), name = "R11")
 
