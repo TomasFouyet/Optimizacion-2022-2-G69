@@ -4,15 +4,34 @@ import numpy as np
 
 matriz = np.identity(45)
 matriz2 = np.identity(45)
+matriz3 = np.identity(45)
+matriz4 = np.identity(45)
+matriz5 = np.identity(45)
+matriz6 = np.identity(45)
+matriz7 = np.identity(45)
+matriz8 = np.identity(45)
 
 
 matriz = matriz.tolist()
 matriz2 = matriz2.tolist()
+matriz3 = matriz3.tolist()
+matriz4 = matriz4.tolist()
+matriz5 = matriz5.tolist()
+matriz6 = matriz6.tolist()
+matriz7 = matriz7.tolist()
+matriz8 = matriz8.tolist()
+
 
 matrices = []
 
 matrices.append(matriz)
 matrices.append(matriz2)
+matrices.append(matriz3)
+matrices.append(matriz4)
+matrices.append(matriz5)
+matrices.append(matriz6)
+matrices.append(matriz7)
+matrices.append(matriz8)
 
 
 
@@ -44,4 +63,5 @@ for matriz in matrices:
 
 
 def obtener_valor(familia, caja, comuna):
+
     return Q_fjk[(familia,caja,comuna)]

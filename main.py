@@ -8,7 +8,6 @@ from archivos import alimentos_por_caja as O_aj
 from prueba import obtener_valor as Q_fjk
 
 
-
 modelo = Model("Grupo 69")
 # modelo.setParam("TimeLimit", 1800)
 
