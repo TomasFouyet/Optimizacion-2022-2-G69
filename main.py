@@ -5,7 +5,7 @@ from archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_
 from random import randint
 from archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
 from archivos import alimentos_por_caja as O_aj
-from prueba2 import obtener_valor as Q_fjk
+from prueba import obtener_valor as Q_fjk
 
 
 

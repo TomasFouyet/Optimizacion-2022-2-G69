@@ -1,24 +1,10 @@
-from array import array
-from multiprocessing.dummy import Array
 import numpy as np
 
-
-def construir_matrix():
-    matrix = []
-    with open ("./BDD/DisponibilidadFamilias.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            linea = linea.strip("\n")
-            linea = linea.split(",")
-            matrix.append(linea)
-    return(matrix)
-
-construir_matrix()
 
 
 matriz = np.identity(45)
 matriz2 = np.identity(45)
 
-print(matriz.tolist())
 
 matriz = matriz.tolist()
 matriz2 = matriz2.tolist()
@@ -44,8 +30,8 @@ for matriz in matrices:
         # print(fila)
         for k in K1:
             for i in range(1,4):
-                if familia == 46:
-                    print({(str(familia),str(i),k): fila[cont2]})
+                #if familia == 46:
+                    # print({(str(familia),str(i),k): fila[cont2]})
                     # print(cont2)
                 add = {(str(familia),str(i),k): fila[cont2]}
                 Q_fjk.update(add)
@@ -56,4 +42,6 @@ for matriz in matrices:
     # print(Q_fjk)
     diccionarios.update(Q_fjk)
 
-print(diccionarios)
+
+def obtener_valor(familia, caja, comuna):
+    return Q_fjk[(familia,caja,comuna)]
