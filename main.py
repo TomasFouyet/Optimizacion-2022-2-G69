@@ -25,6 +25,11 @@ B = ["1", "2", "3","4", "5", "6", "7", "8", "9", "10", "11", "12", "13","14", "1
 #T = ["1", "2", "3","4", "5"]
 F = ["1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12","13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28","29", "30", "31","32", "33", "34","35", "36", "37","38", "39", "40", "41", "42", "43", "44", "45"]
 
+F_num = range (1, 361)
+F =[]
+for f in F_num:
+     f = str(f)
+     F.append(f)
 # Agregar Parametros #
 
 
@@ -39,7 +44,8 @@ U = 220.45
 E_t = 300
 ##   M_a LISTO  ## 
 L = 1200
-Pre = 85000000000
+Pre = 350000000
+#85000000000
 Big_M = 10^10000
 
 ##  N_ma LISTO  ## 
@@ -67,9 +73,6 @@ v_mi = modelo.addVars(M, I, vtype=GRB.BINARY, name="v_mi")
 
 # 1 si el camión “b” tiene asignado un lugar de acopio “k” desde la bodega i#
 phi_bki = modelo.addVars(B, K, I, vtype=GRB.BINARY, name="phi_bk")
-
-#cantidad de unidades de alimento “a” en la caja de tipo “j”
-# o_aj = modelo.addVars(A, J, vtype=GRB.INTEGER, name="o_aj")
 
 # 1 si familia “i” vive cercano a centro de entrega “k” y se le entrega una caja tipo “j” #
 u_fjk = modelo.addVars(F, J, K, vtype=GRB.BINARY, name="u_fjk")
@@ -116,49 +119,69 @@ modelo.setObjective(funcion_objetivo, GRB.MAXIMIZE)
 modelo.optimize()
 
 
-for constr in modelo.getConstrs():
-     if constr.getAttr("slack") == 0:
-          print("----------------------------------------")
-          print(f"La restricción {constr} está activa")
-          print("----------------------------------------")
+#for constr in modelo.getConstrs():
+     #if constr.getAttr("slack") == 0:
+          #print("----------------------------------------")
+          #print(f"La restricción {constr} está activa")
+          #print("----------------------------------------")
 
-
+print("--------------------- Variable que indica la cantidad de cajas 'j' en la municipalidad 'k'-------------------------")
 for j in J:
      for k in K:
-          print(f"hay {x_jk[j,k].x} cajas de tipo {j} en la municipalidad {k}")
+          print(f"Hay {x_jk[j,k].x} cajas de tipo {j} en la municipalidad {k}")
+print("-------------------------------------------------------------------------------------------------------------------")
 
-
+print("--------------------- Variable que indica los camiones 'b' en uso y su recorrdio desde 'i' hacia 'k'-------------------------")
 for b in B:
      for k in K:
           for i in I:
                var = phi_bki[b,k,i].x
                if var == 1:
-                   print(f"El camión {b} esta asignado a {k} desde la bodega {i}")
-               if var == 0:
-                    pass
+                   print(f"El camión {b} esta asignado desde la bodega {i} hacia {k}")
+print("-------------------------------------------------------------------------------------------------------------------")
+
+print("--------------------- Variable que indica los camiones 'a' se compra en el proveedor 'm' y su bodega respectiva 'i'-------------------------")
 for a in A:
      for m in M:
           for i in I:
                var = y_aim[a,i,m].x
                if var != 0:
-                    print(f"se le compra {var} de {a} al provedor {m} y se almacena en {i}")
+                    print(f"Se le compra {var} de {a} al provedor {m}  a un precio unitario de ${P_am(a,m)} y se almacena en la bodega '{i}'")
+print("-------------------------------------------------------------------------------------------------------------------")
 
+
+
+print("--------------------- Variable que indica si la bodega 'i' esta en uso-------------------------")
 for i in I:
      var = z_i[i].x
      if var == 1:
-          print(f"La bodega {i} se esta usando")
+          print(f"La bodega {i} se esta usando y cuesta ${F_i(i)}")
+print("-------------------------------------------------------------------------------------------------------------------")
 
+print("--------------------- Variable que indica si la bodega se le compra al proveedor 'm' y cual bodega 'i' se usará para almacenar-------------------------")
 for m in M:
      for i in I:
           var = v_mi[m,i].x
           if var == 1:
-               print(f"Se le compra a {m} y se guarda en {i}")
-          
+               print(f"Se le compra a {m} y se guarda en la bodega '{i}' a un costo asociado al despacho de ${C_mi(m,i)}")
+
+print("-------------------------------------------------------------------------------------------------------------------")
+
+print("--------------------- Variable que indica si la bodega se la familia 'f' recibe su caja de tipo 'j' adecuada en la comuna 'k'-------------------------")
+for f in F:
+     for k in K:
+          for j in J:
+               if u_fjk[f,j,k].x == 1:
+                    print(f"La familia {f} que vive en {k} recibe su caja correspondiente de tipo {j}")
+print("-------------------------------------------------------------------------------------------------------------------")
 
 
 
 # RESTRICCIONES EN REVISIÓN #
 #modelo.addConstrs((u_fjk[str(f),j,k] >= u_fjk[str(f+1),j,k] for f in range(1,len(F)-1) for j in J for k in K), name = "R2")
+
+
+#modelo.addConstrs((quicksum(u_fjk[str(f),j,k] for j in J for k in K) >= quicksum(u_fjk[str(f+1),j,k] for j in J for k in K) for f in range(1,len(F)-1)), name = "R14")
 #modelo.addConstrs((quicksum(x_jk[j, k] for j in J) <= H_k(k) for k in K), name = "R16")
 
 #Se necesitará cuando se agrande la matriz
