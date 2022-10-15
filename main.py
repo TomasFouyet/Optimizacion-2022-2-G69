@@ -6,6 +6,7 @@ from random import randint
 from lectura_archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
 from lectura_archivos import alimentos_por_caja as O_aj
 from prueba import obtener_valor as Q_fjk
+from csv import writer
 
 
 modelo = Model("Grupo 69")
@@ -177,47 +178,93 @@ print("-------------------------------------------------------------------------
 
 
 #ESCRIBIR EN EL CSV
+
+
+def escribir_csv(linea):
+     with open("output.txt", "a", newline='', encoding='UTF-8') as file:
+          file.write(linea+"\n")
+          file.close()
+
+
 print("Valor óptimo = 277")
+escribir_csv("Valor óptimo = 277")
+escribir_csv("--------------------")
+escribir_csv("")
 
 print("Variable x_jk")
+escribir_csv("Variable x_jk")
+escribir_csv("")
 for j in J:
      for k in K:
           var = x_jk[j,k].x
+          escribir_csv(f"x_{j}{k}: {var}")
           print(f"x_{j}{k}: {var}")
-          
+
+escribir_csv("")
+escribir_csv("--------------------")
+escribir_csv("")
+escribir_csv("Variable y_aim")
+escribir_csv("")
 print("Variable y_aim")
 for a in A:
      for i in I:
           for m in M:
                var = y_aim[a,i,m].x
+               escribir_csv(f"y_{a}{i}{m}: {var}")
                print(f"y_{a}{i}{m}: {var}")
+
+escribir_csv("")
+escribir_csv("--------------------")
+escribir_csv("")
+escribir_csv("Variable p_bki")
+escribir_csv("")
 
 print("Variable p_bki")
 for b in B:
      for k in K:
           for i in I:
                var = phi_bki[b,k,i].x
+               escribir_csv(f"phi_{b}{k}{i}: {var}")
                print(f"phi_{b}{k}{i}: {var}")
+
+escribir_csv("")
+escribir_csv("--------------------")
+escribir_csv("")
+escribir_csv("Variable z_i")
+escribir_csv("")
 
 print("Variable z_i")
 for i in I:
-               var = z_i[i].x
-               print(f"x_{i}: {var}")
+     var = z_i[i].x
+     escribir_csv(f"x_{i}: {var}")
+     print(f"x_{i}: {var}")
+
+escribir_csv("")
+escribir_csv("--------------------")
+escribir_csv("")
+escribir_csv("Variable v_mi")
+escribir_csv("")
 
 print("Variable v_mi")
 for i in I:
      for m in M:
           var = v_mi[m,i].x
+          escribir_csv(f"x_{m}{i}: {var}")
           print(f"x_{m}{i}: {var}")
+
+escribir_csv("")
+escribir_csv("--------------------")
+escribir_csv("")
+escribir_csv("Variable u_fjk")
+escribir_csv("")
 
 print("Variable u_fjk")
 for f in F:
      for j in J:
           for k in K:
                var = u_fjk[f,j,k].x
+               escribir_csv(f"u_{f}{j}{k}: {var}")
                print(f"u_{f}{j}{k}: {var}")
-
-
 
 
 
