@@ -1,10 +1,10 @@
-from archivos import tablaNA, tablaNC, tablaCD
-from archivos import NutrienteCaja, NutrienteAlimento, CostoDespacho
+from lectura_archivos import tablaNA, tablaNC, tablaCD
+from lectura_archivos import NutrienteCaja, NutrienteAlimento, CostoDespacho
 from gurobipy import Model, GRB, quicksum
-from archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
+from lectura_archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
 from random import randint
-from archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
-from archivos import alimentos_por_caja as O_aj
+from lectura_archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
+from lectura_archivos import alimentos_por_caja as O_aj
 from prueba import obtener_valor as Q_fjk
 
 
@@ -174,6 +174,50 @@ for f in F:
                if u_fjk[f,j,k].x == 1:
                     print(f"La familia {f} que vive en {k} recibe su caja correspondiente de tipo {j}")
 print("-------------------------------------------------------------------------------------------------------------------")
+
+
+#ESCRIBIR EN EL CSV
+print("Valor óptimo = 277")
+
+print("Variable x_jk")
+for j in J:
+     for k in K:
+          var = x_jk[j,k].x
+          print(f"x_{j}{k}: {var}")
+          
+print("Variable y_aim")
+for a in A:
+     for i in I:
+          for m in M:
+               var = y_aim[a,i,m].x
+               print(f"y_{a}{i}{m}: {var}")
+
+print("Variable p_bki")
+for b in B:
+     for k in K:
+          for i in I:
+               var = phi_bki[b,k,i].x
+               print(f"phi_{b}{k}{i}: {var}")
+
+print("Variable z_i")
+for i in I:
+               var = z_i[i].x
+               print(f"x_{i}: {var}")
+
+print("Variable v_mi")
+for i in I:
+     for m in M:
+          var = v_mi[m,i].x
+          print(f"x_{m}{i}: {var}")
+
+print("Variable u_fjk")
+for f in F:
+     for j in J:
+          for k in K:
+               var = u_fjk[f,j,k].x
+               print(f"u_{f}{j}{k}: {var}")
+
+
 
 
 
