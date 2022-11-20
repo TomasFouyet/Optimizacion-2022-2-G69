@@ -1,29 +1,8 @@
-from cmath import cos
 import csv
 from prettytable import PrettyTable
 
-NutrienteAlimento = []
-with open("./BDD/NutrienteAlimento.csv", encoding="UTF-8") as file:
-    read = csv.reader(file)
-    for row in read:
-        NutrienteAlimento.append(row)
-tablaNA = PrettyTable()
-tablaNA.field_names = NutrienteAlimento[0]
-for i in range(1, len(NutrienteAlimento)):
-    tablaNA.add_row(NutrienteAlimento[i])
-
-NutrienteCaja = []
-with open("./BDD/NutrientesCaja.csv", encoding="UTF-8") as file:
-    read = csv.reader(file)
-    for row in read:
-        NutrienteCaja.append(row)
-tablaNC = PrettyTable()
-tablaNC.field_names = NutrienteCaja[0]
-for i in range(1, len(NutrienteCaja)):
-    tablaNC.add_row(NutrienteCaja[i])
-
 CostoDespacho = []
-with open("./BDD/CostoDespacho.csv", encoding="UTF-8") as file:
+with open("BDD/CostoDespacho.csv", encoding="UTF-8") as file:
     read = csv.reader(file)
     for row in read:
         CostoDespacho.append(row)
@@ -84,21 +63,6 @@ tablaAD.field_names = AlimentosCaja[0]
 for i in range(1, len(AlimentosCaja)):
     tablaAD.add_row(AlimentosCaja[i])
 
-# Conjunto Nutrientes por Alimento #
-
-Nutrientes_Alimento = dict()
-
-for i in range(1, len(NutrienteAlimento)):
-    add = {NutrienteAlimento[i][0]: {"Unidad x Kg": NutrienteAlimento[i][1], 
-                                    "Magnesio": NutrienteAlimento[i][2],
-                                    "Calcio": NutrienteAlimento[i][3],
-                                    "Fosforo":  NutrienteAlimento[i][4],
-                                    "Sodio": NutrienteAlimento[i][5],
-                                    "Potasio": NutrienteAlimento[i][6],
-                                    "Hierro": NutrienteAlimento[i][7],
-                                    "Zinc": NutrienteAlimento[i][8],
-                                    "Yodo": NutrienteAlimento[i][9]}}
-    Nutrientes_Alimento.update(add)
 
 # Conjunto Costo Despacho Por Supermercado a bodega i # 
 
@@ -115,20 +79,7 @@ for i in range(1, len(CostoDespacho)):
                                  "Estadio Manquehue": CostoDespacho[i][9],
                                  "Macul": CostoDespacho[i][10]}}
     Costos_Despacho.update(add)
-
-# Conjunto cantidad de nutriente por tipo de caja # 
-
-Nutrientes_Caja = dict()
-for i in range(1, len(NutrienteCaja)):
-    add = {NutrienteCaja[i][0]: {"Magnesio": NutrienteCaja[i][1],
-                                 "Calcio": NutrienteCaja[i][2],
-                                 "Fosforo":  NutrienteCaja[i][3],
-                                 "Sodio": NutrienteCaja[i][4],
-                                 "Potasio": NutrienteCaja[i][5],
-                                 "Hierro": NutrienteCaja[i][6],
-                                 "Zinc": NutrienteCaja[i][7],
-                                 "Yodo": NutrienteCaja[i][8]}}
-    Nutrientes_Caja.update(add)
+ 
 
 Precio_Alimentos = dict()
 for i in range(1, len(PrecioAlimento)):
@@ -179,17 +130,8 @@ for i in range(1, len(AlimentosCaja)):
     ALimentos_Por_Caja.update(add)
 
 
-def obtener_nutriente_por_alimento(alimento, nutriente):
-    return Nutrientes_Alimento[alimento][nutriente]
-
 def obtener_costo_despacho_por_super(super, bodega):
     return Costos_Despacho[super][bodega]
-
-def obtener_nutrientes_por_caja(caja, nutriente):
-    return Nutrientes_Caja[caja][nutriente]
-
-def masa_alimento(alimento):
-    return Nutrientes_Alimento[alimento]["Unidad x Kg"]
 
 def obtener_precio_por_alimentos(alimento, super):
     return Precio_Alimentos[alimento][super]
@@ -197,8 +139,6 @@ def obtener_precio_por_alimentos(alimento, super):
 def stock_alimentos(alimento, super):
     return Stock_Alimentos[alimento][super]
 
-def metros_utiles(comuna):
-    return Lugares_Acopio[comuna]["m2 utiles"] # como comuna recibe un numero
 
 def precio_arriendo(comuna):
     return Lugares_Acopio[comuna]["precio"]
@@ -207,12 +147,5 @@ def distancias(comuna, sector):
     return Distancia[comuna][sector]
 
 
-def minimo(comuna):        
-    # print(Distancia[comuna])
-    # print(Distancia[comuna].values())
-    return min(Distancia[comuna].values())
-
 def alimentos_por_caja(alimento, caja):
     return ALimentos_Por_Caja[alimento][caja]
-
-# print(minimo("Santiago"), minimo("Macul"), minimo("Providencia"))

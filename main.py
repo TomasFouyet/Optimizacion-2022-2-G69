@@ -1,16 +1,13 @@
-from lectura_archivos import tablaNA, tablaNC, tablaCD
-from lectura_archivos import NutrienteCaja, NutrienteAlimento, CostoDespacho
 from gurobipy import Model, GRB, quicksum
-from lectura_archivos import obtener_nutriente_por_alimento as A_an, obtener_nutrientes_por_caja as R_nj, masa_alimento as M_a, obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
+from lectura_archivos import obtener_precio_por_alimentos as P_am, obtener_costo_despacho_por_super as C_mi, stock_alimentos as N_ma
 from random import randint
-from lectura_archivos import metros_utiles as H_k, precio_arriendo as F_i, distancias as D_ik, minimo
+from lectura_archivos import precio_arriendo as F_i, distancias as D_ik
 from lectura_archivos import alimentos_por_caja as O_aj
 from prueba import obtener_valor as Q_fjk
-from csv import writer
 
 
 modelo = Model("Grupo 69")
-# modelo.setParam("TimeLimit", 1800)
+modelo.setParam("TimeLimit", 300)
 
 # Agregar Conjuntos #
 
@@ -36,7 +33,7 @@ for f in F_num:
 
 ##  D_ik LISTO  ##
 C_max = 700000
-H = 300000
+H = 25000
 #25000
 U = 220.45
 ##  F_i LISTO  ##
@@ -48,7 +45,7 @@ E_t = 200
 
 L = 1200
 
-Pre = 350000000
+Pre = 350457261
 #85000000000
 Big_M = 10^10000
 
